@@ -1,0 +1,81 @@
+Анализ существующих информационных систем на базе WEB-архитектуры
+Существуют различные информационные системы, построенные на архитектуре WEB-приложений, которые можно классифицировать по нескольким критериям:
+
+Типы систем:
+Системы управления контентом (CMS): WordPress, Joomla, Drupal.
+Системы управления проектами: Trello, Asana, Jira.
+Системы электронного документооборота: 1С, Remedy.
+eCommerce платформы: Shopify, Magento, WooCommerce.
+Преимущества WEB-приложений:
+Доступность: Возможность доступа из любой точки с интернет-соединением.
+Совместная работа: Упрощение обмена информацией между пользователями.
+Масштабируемость: Возможность быстро адаптироваться под растущие потребности компании.
+Обновление и техподдержка: Централизованное управление версиями и обновлениями.
+Возможности:
+Мобильная адаптация: Responsive design для доступа с мобильных устройств.
+Интеграция с внешними сервисами: API для взаимодействия с другими системами.
+Безопасность данных: Шифрование, аутентификация и авторизация пользователей.
+Использование в компаниях:
+Управление клиентами (CRM): Использование для отслеживания взаимодействия с клиентами и управления продажами.
+Управление ресурсами (ERP): Автоматизация бизнес-процессов.
+Обработка данных: Ведение аналитики и отчетности.
+Разработка WEB-приложения на Delphi 10.2 с использованием MS IIS и MS SQL Server
+Шаги создания приложения
+Настройка среды разработки:
+Установить Delphi 10.2.
+Установить и настроить MS Internet Information Services (IIS).
+Настроить подключение к MS SQL Server.
+Создание базы данных:
+CREATE DATABASE MyWebAppDB;
+USE MyWebAppDB;
+
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY IDENTITY(1,1),
+    Username NVARCHAR(50) NOT NULL,
+    Password NVARCHAR(50) NOT NULL,
+    Email NVARCHAR(100) NOT NULL
+);
+Создание веб-приложения:
+Создать новый проект в Delphi (VCL Forms Application).
+Настроить необходимые модули для работы с HTTP-запросами и ответами.
+Создать интерфейс для ввода данных пользователя (логин, пароль, email).
+Подключение к базе данных:
+Использовать компонент TSQLConnection для подключения к MS SQL Server.
+Реализовать логику обработки данных (регистрация пользователя, вход в систему).
+Настройка IIS:
+Опубликовать приложение в IIS.
+Настроить виртуальный каталог и разрешения.
+Пример кода на Delphi
+uses
+  ..., Data.DBXSQLServer, Data.SqlExpr;
+
+procedure TForm1.RegisterUser(username, password, email: string);
+var
+  SQLConnection: TSQLConnection;
+  SQLQuery: TSQLQuery;
+begin
+  SQLConnection := TSQLConnection.Create(nil);
+  try
+    SQLConnection.DriverName := 'MSSQL';
+    SQLConnection.Params.Values['HostName'] := 'localhost';
+    SQLConnection.Params.Values['Database'] := 'MyWebAppDB';
+    SQLConnection.Params.Values['User_Name'] := 'your_username';
+    SQLConnection.Params.Values['Password'] := 'your_password';
+    SQLConnection.Open;
+
+    SQLQuery := TSQLQuery.Create(nil);
+    try
+      SQLQuery.SQLConnection := SQLConnection;
+      SQLQuery.SQL.Text := 'INSERT INTO Users (Username, Password, Email) VALUES (:Username, :Password, :Email)';
+      SQLQuery.ParamByName('Username').AsString := username;
+      SQLQuery.ParamByName('Password').AsString := password;
+      SQLQuery.ParamByName('Email').AsString := email;
+      SQLQuery.ExecSQL;
+    finally
+      SQLQuery.Free;
+    end;
+
+  finally
+    SQLConnection.Free;
+  end;
+end;
