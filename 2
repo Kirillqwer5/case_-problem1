@@ -1,0 +1,17 @@
+class BaseClass:
+    def display(self):
+        return "Это метод базового класса"
+
+class DerivedClass(BaseClass):
+    def display(self):
+        return "Это метод производного класса"
+
+def main():
+    base_instance = BaseClass()
+    derived_instance = DerivedClass()
+
+    print(base_instance.display())   # Вызов метода базового класса
+    print(derived_instance.display()) # Вызов метода производного класса
+
+if __name__ == "__main__":
+    main()
