@@ -1,0 +1,34 @@
+# Таблица клиентов (Customers): содержит информацию о клиентах.
+# Таблица туров (Tours): содержит информацию о предлагаемых турах.
+# Таблица услуг (Services): содержит перечень услуг, которые можно добавить к туру.
+# Таблица заказов (Bookings): таблица переменной информации, содержащая заказы клиентов на туры.
+
+CREATE TABLE Customers (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    phone VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE Tours (
+    tour_id INT AUTO_INCREMENT PRIMARY KEY,
+    tour_name VARCHAR(100) NOT NULL,
+    destination VARCHAR(100) NOT NULL,
+    duration INT NOT NULL, -- продолжительность в днях
+    price DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE Services (
+    service_id INT AUTO_INCREMENT PRIMARY KEY,
+    service_name VARCHAR(100) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE Bookings (
+    booking_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    tour_id INT NOT NULL,
+    booking_date DATE NOT NULL,
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id),
+    FOREIGN KEY (tour_id) REFERENCES Tours(tour_id)
+);
